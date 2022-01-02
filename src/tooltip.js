@@ -383,7 +383,7 @@ class Tooltip extends Component {
           ]}
         >
           {
-            this.props.imageResource ? <ImageBackground source={this.props.imageResource} resizeMode="contain" style={this.props.markerStyle}>
+            this.props.imageResource ? <ImageBackground source={this.props.imageResource} resizeMode="contain" style={this.props.toolTipBackgroundStyle}>
             {this.props.children}
           </ImageBackground> : this.props.children
           }
