@@ -6,6 +6,8 @@ import {
   Modal,
   TouchableWithoutFeedback,
   View,
+  Image,
+  ImageBackground
 } from 'react-native';
 import rfcIsEqual from 'react-fast-compare';
 import {
@@ -114,7 +116,6 @@ class Tooltip extends Component {
 
     this.isMeasuringChild = false;
     this.interactionPromise = null;
-    this.dimensionsSubscription = null;
 
     this.childWrapper = React.createRef();
     this.state = {
@@ -138,10 +139,7 @@ class Tooltip extends Component {
   }
 
   componentDidMount() {
-    this.dimensionsSubscription = Dimensions.addEventListener(
-      'change',
-      this.updateWindowDims,
-    );
+    Dimensions.addEventListener('change', this.updateWindowDims);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -365,6 +363,7 @@ class Tooltip extends Component {
       }
     };
 
+
     return (
       <TooltipChildrenContext.Provider value={{ tooltipDuplicate: true }}>
         <View
@@ -383,7 +382,12 @@ class Tooltip extends Component {
             this.props.childrenWrapperStyle,
           ]}
         >
-          {this.props.children}
+          {
+            this.props.imageResource ? <ImageBackground source={this.props.imageResource} resizeMode="contain" style={{flex: 1, width: 108, height: 64}}>
+            {this.props.children}
+          </ImageBackground> : this.props.children
+          }
+            
         </View>
       </TooltipChildrenContext.Provider>
     );
@@ -428,6 +432,7 @@ class Tooltip extends Component {
                   accessible={this.props.accessible}
                 >
                   {this.props.content}
+
                 </TouchableWithoutFeedback>
               </View>
             </View>
@@ -441,12 +446,7 @@ class Tooltip extends Component {
   };
 
   render() {
-    const {
-      children,
-      isVisible,
-      useReactNativeModal,
-      modalComponent,
-    } = this.props;
+    const { children, isVisible, useReactNativeModal, modalComponent } = this.props;
 
     const hasChildren = React.Children.count(children) > 0;
     const showTooltip = isVisible && !this.state.waitingForInteractions;
