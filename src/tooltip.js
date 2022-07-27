@@ -384,7 +384,7 @@ class Tooltip extends Component {
         >
           {
             this.props.imageResource ? <ImageBackground source={this.props.imageResource} resizeMode="contain" style={this.props.toolTipBackgroundStyle}>
-            {this.props.children}
+            {!this.props.hideChild ? this.props.children: null}
           </ImageBackground> : this.props.children
           }
             
@@ -432,7 +432,6 @@ class Tooltip extends Component {
                   accessible={this.props.accessible}
                 >
                   {this.props.content}
-
                 </TouchableWithoutFeedback>
               </View>
             </View>
