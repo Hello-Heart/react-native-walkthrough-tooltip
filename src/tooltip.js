@@ -243,6 +243,12 @@ class Tooltip extends Component {
     });
   };
 
+  measureImageResource = e => {
+    const { width, height } = e.nativeEvent.layout;
+
+    alert(height)
+  }
+
   onChildMeasurementComplete = rect => {
     this.setState(
       {
@@ -266,9 +272,15 @@ class Tooltip extends Component {
           this.childWrapper.current &&
           typeof this.childWrapper.current.measure === 'function'
         ) {
+          
           this.childWrapper.current.measure(
             (x, y, width, height, pageX, pageY) => {
-              const childRect = new Rect(pageX, pageY, width, height);
+              const extraHeight = this.props.imageResource ? y : 0;
+
+  
+              const operator = this.props.placement !== "bottom" ? -1 : 1;
+              const childRect = new Rect(pageX, pageY + (extraHeight * operator) , width, height);
+              
               if (
                 Object.values(childRect).every(value => value !== undefined)
               ) {
