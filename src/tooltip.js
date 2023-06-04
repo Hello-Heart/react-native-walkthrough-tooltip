@@ -375,6 +375,7 @@ class Tooltip extends Component {
       }
     };
 
+    const Wrapper = this.props.childStyle ? View : React.Fragment;
 
     return (
       <TooltipChildrenContext.Provider value={{ tooltipDuplicate: true }}>
@@ -395,9 +396,16 @@ class Tooltip extends Component {
           ]}
         >
           {
-            this.props.imageResource ? <ImageBackground source={this.props.imageResource} resizeMode="contain" style={this.props.toolTipBackgroundStyle}>
-            {!this.props.hideChild ? this.props.children: null}
-          </ImageBackground> : this.props.children
+              this.props.imageResource
+              ? <ImageBackground source={this.props.imageResource} resizeMode="contain" style={this.props.toolTipBackgroundStyle}>
+                {
+                  (!this.props.hideChild)
+                  && <Wrapper style={this.props.childStyle}>
+                      {this.props.children}
+                    </Wrapper> 
+                }
+            </ImageBackground>
+            : this.props.children
           }
             
         </View>
