@@ -6,8 +6,8 @@ import {
   Modal,
   TouchableWithoutFeedback,
   View,
-  Image,
-  ImageBackground
+  ImageBackground,
+  Animated
 } from 'react-native';
 import rfcIsEqual from 'react-fast-compare';
 import {
@@ -440,7 +440,7 @@ class Tooltip extends Component {
         accessible={this.props.accessible}
       >
         <View style={generatedStyles.containerStyle}>
-          <View style={[generatedStyles.backgroundStyle]}>
+          <Animated.View style={[generatedStyles.backgroundStyle]}>
             <View style={generatedStyles.tooltipStyle}>
               {hasChildren ? <View style={generatedStyles.arrowStyle} /> : null}
               <View
@@ -455,7 +455,7 @@ class Tooltip extends Component {
                 </TouchableWithoutFeedback>
               </View>
             </View>
-          </View>
+          </Animated.View>
           {hasChildren && this.props.showChildInTooltip
             ? this.renderChildInTooltip()
             : null}
