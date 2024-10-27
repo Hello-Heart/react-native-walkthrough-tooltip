@@ -139,7 +139,10 @@ class Tooltip extends Component {
   }
 
   componentDidMount() {
-    Dimensions.addEventListener('change', this.updateWindowDims);
+    this.dimensionsSubscription = Dimensions.addEventListener(
+      'change',
+      this.updateWindowDims,
+    );
   }
 
   componentDidUpdate(prevProps, prevState) {
