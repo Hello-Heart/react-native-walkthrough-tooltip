@@ -275,24 +275,16 @@ class Tooltip extends Component {
           this.childWrapper.current &&
           typeof this.childWrapper.current.measure === 'function'
         ) {
-          
-          this.childWrapper.current.measure(
-            (x, y, width, height, pageX, pageY) => {
-              const extraHeight = this.props.imageResource ? y : 0;
-
-  
-              const operator = this.props.placement !== "bottom" ? -1 : 1;
-              const childRect = new Rect(pageX, pageY + (extraHeight * operator) , width, height);
-              
-              if (
-                Object.values(childRect).every(value => value !== undefined)
-              ) {
-                this.onChildMeasurementComplete(childRect);
-              } else {
-                this.doChildlessPlacement();
-              }
-            },
-          );
+          this.childWrapper.current.measureInWindow((x, y, width, height) => {
+            const childRect = new Rect(x, y, width, height);
+            if (
+              Object.values(childRect).every((value) => value !== undefined)
+            ) {
+              this.onChildMeasurementComplete(childRect);
+            } else {
+              this.doChildlessPlacement();
+            }
+          });
         } else {
           this.doChildlessPlacement();
         }
