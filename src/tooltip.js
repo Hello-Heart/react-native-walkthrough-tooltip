@@ -273,7 +273,7 @@ class Tooltip extends Component {
         this.isMeasuringChild = true;
         if (
           this.childWrapper.current &&
-          typeof this.childWrapper.current.measure === 'function'
+          typeof this.childWrapper.current.measureInWindow === 'function'
         ) {
           this.childWrapper.current.measureInWindow((x, y, width, height) => {
             const childRect = new Rect(x, y, width, height);
