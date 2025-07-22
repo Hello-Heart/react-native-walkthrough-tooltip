@@ -473,6 +473,7 @@ class Tooltip extends Component {
             transparent
             visible={showTooltip}
             onRequestClose={this.props.onClose}
+            statusBarTranslucent
             supportedOrientations={this.props.supportedOrientations}
           >
             {this.renderContentForTooltip()}
