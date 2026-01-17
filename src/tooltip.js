@@ -209,7 +209,7 @@ class Tooltip extends Component {
     return null;
   }
 
-  updateWindowDims = dims => {
+  updateWindowDims = (dims) => {
     this.setState(
       {
         windowDims: dims.window,
@@ -238,7 +238,7 @@ class Tooltip extends Component {
     );
   };
 
-  measureContent = e => {
+  measureContent = (e) => {
     const { width, height } = e.nativeEvent.layout;
     const contentSize = new Size(width, height);
     this.setState({ contentSize }, () => {
@@ -246,13 +246,13 @@ class Tooltip extends Component {
     });
   };
 
-  measureImageResource = e => {
+  measureImageResource = (e) => {
     const { width, height } = e.nativeEvent.layout;
 
-    alert(height)
-  }
+    alert(height);
+  };
 
-  onChildMeasurementComplete = rect => {
+  onChildMeasurementComplete = (rect) => {
     this.setState(
       {
         childRect: rect,
@@ -275,17 +275,19 @@ class Tooltip extends Component {
           this.childWrapper.current &&
           typeof this.childWrapper.current.measure === 'function'
         ) {
-          
           this.childWrapper.current.measure(
             (x, y, width, height, pageX, pageY) => {
               const extraHeight = this.props.imageResource ? y : 0;
+              const operator = this.props.placement !== 'bottom' ? -1 : 1;
+              const childRect = new Rect(
+                pageX,
+                pageY + extraHeight * operator,
+                width,
+                height,
+              );
 
-  
-              const operator = this.props.placement !== "bottom" ? -1 : 1;
-              const childRect = new Rect(pageX, pageY + (extraHeight * operator) , width, height);
-              
               if (
-                Object.values(childRect).every(value => value !== undefined)
+                Object.values(childRect).every((value) => value !== undefined)
               ) {
                 this.onChildMeasurementComplete(childRect);
               } else {
@@ -313,13 +315,8 @@ class Tooltip extends Component {
 
   computeGeometry = () => {
     const { arrowSize, childContentSpacing } = this.props;
-    const {
-      childRect,
-      contentSize,
-      displayInsets,
-      placement,
-      windowDims,
-    } = this.state;
+    const { childRect, contentSize, displayInsets, placement, windowDims } =
+      this.state;
 
     const options = {
       displayInsets,
@@ -398,19 +395,21 @@ class Tooltip extends Component {
             this.props.childrenWrapperStyle,
           ]}
         >
-          {
-              this.props.imageResource
-              ? <ImageBackground source={this.props.imageResource} resizeMode="contain" style={this.props.toolTipBackgroundStyle}>
-                {
-                  (!this.props.hideChild)
-                  && <Wrapper style={this.props.childStyle}>
-                      {this.props.children}
-                    </Wrapper> 
-                }
+          {this.props.imageResource ? (
+            <ImageBackground
+              source={this.props.imageResource}
+              resizeMode="contain"
+              style={this.props.toolTipBackgroundStyle}
+            >
+              {!this.props.hideChild && (
+                <Wrapper style={this.props.childStyle}>
+                  {this.props.children}
+                </Wrapper>
+              )}
             </ImageBackground>
-            : this.props.children
-          }
-            
+          ) : (
+            this.props.children
+          )}
         </View>
       </TooltipChildrenContext.Provider>
     );
@@ -468,7 +467,8 @@ class Tooltip extends Component {
   };
 
   render() {
-    const { children, isVisible, useReactNativeModal, modalComponent } = this.props;
+    const { children, isVisible, useReactNativeModal, modalComponent } =
+      this.props;
 
     const hasChildren = React.Children.count(children) > 0;
     const showTooltip = isVisible && !this.state.waitingForInteractions;
@@ -481,6 +481,7 @@ class Tooltip extends Component {
             transparent
             visible={showTooltip}
             onRequestClose={this.props.onClose}
+            statusBarTranslucent
             supportedOrientations={this.props.supportedOrientations}
           >
             {this.renderContentForTooltip()}
